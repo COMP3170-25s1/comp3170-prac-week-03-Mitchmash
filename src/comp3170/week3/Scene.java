@@ -54,6 +54,8 @@ public class Scene {
 			new Vector4f(-1,-1, 0, 1),
 			new Vector4f( 1,-1, 0, 1),
 		};
+		
+		
 			
 			// @formatter:on
 		vertexBuffer = GLBuffers.createBuffer(vertices);
@@ -82,12 +84,16 @@ public class Scene {
 
 	public void draw() {
 		
+		Matrix4f Matrix = new Matrix4f();
+		Matrix = translationMatrix(0,0,Matrix);
 		shader.enable();
 		// set the attributes
 		shader.setAttribute("a_position", vertexBuffer);
 		shader.setAttribute("a_colour", colourBuffer);
+		shader.setUniform("u_model", Matrix);
 
 		// draw using index buffer
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -135,6 +141,18 @@ public class Scene {
 	public static Matrix4f rotationMatrix(float angle, Matrix4f dest) {
 
 		// TODO: Your code here
+		// clear the matrix to the identity matrix
+		dest.identity();
+
+		//     [ cos(angle) -sin(angle) 0 0 ]
+		// T = [ sin(angle)  cos(angle) 0 0 ]
+	    //     [     0          0       0 0 ]
+		//     [     0          0       0 1 ]
+
+		//dest.m00(Math.cos(angle));
+		//dest.m01(Math.sin(angle));
+		//dest.m10(Math.sin(-angle));
+		//dest.m11(Math.cos(angle));
 
 		return dest;
 	}
